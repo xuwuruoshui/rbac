@@ -1,5 +1,5 @@
 <template>
-  <div>aa</div>
+  <div>菜单管理</div>
 </template>
 
 <script>
