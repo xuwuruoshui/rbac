@@ -1,19 +1,26 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../views/Login.vue'
+import Index from '../views/Index.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
-    {
-    path: '/index', name: 'Index', 
-    component: () => import('../views/Index.vue') 
-  }, 
-   { 
-     path: '/login', name: 'Login', 
-     component: Login 
-    }
-  ]
+  {
+    path: '/', 
+    name: 'Index',
+    component: Index
+  },
+  {
+    path: '/index', 
+    name: 'Index',
+    component: Index
+  },
+  {
+    path: '/login', 
+    name: 'Login',
+    component: () => import('../views/Login.vue')
+  }
+]
 
 const router = new VueRouter({
   mode: 'history',

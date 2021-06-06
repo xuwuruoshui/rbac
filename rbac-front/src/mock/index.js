@@ -1,22 +1,28 @@
-const Mock = require("mockjs")
+const Mock = require('mockjs')
 
-const random = Mock.Random
+const Random = Mock.Random
 
 let result = {
-    code: 200,
-    msg: "操作成功",
-    data:null
+	code: 200,
+	msg: '操作成功',
+	data: null
 }
 
-Mock.mock("/captcha","post",()=>{
-    result.data = {
-        token: random.string(32),
-        captchaImg: random.dataImage('120x40','as24a')
-    }
-    return result
+Mock.mock('/captcha', 'get', () => {
+
+	result.data = {
+		token: Random.string(32),
+		captchaImg: Random.dataImage('120x40', 'p7n5w')
+	}
+	return result
 })
 
-Mock.mock("/login","post",()=>{
-    
-    return result
+Mock.mock('/login', 'post', () => {
+
+	// 无法在header中传入数jwt
+
+	// result.code = 400
+	// result.msg = "验证码错误"
+
+	return result
 })

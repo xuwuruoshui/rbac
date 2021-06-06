@@ -34,7 +34,8 @@
 </template>
 
 <script>
-import { mapMutations  } from 'vuex'
+import { mapMutations  } from 'vuex';
+
 
 export default {
   data() {
@@ -79,10 +80,11 @@ export default {
       this.$refs[loginForm].resetFields();
     },
     getCaptcha(){
-        this.$axios.post("/captcha").then(res=>{
-            console.log(res.data.data);
-            this.loginForm.token = res.data.data.token;
-            this.captchaImg = res.data.data.captchaImg;
+        this.$axios.get("/captcha").then(res=>{
+            console.log(res);
+            this.loginForm.token = res.data.token;
+            this.captchaImg = res.data.captchaImg;
+
         })
     },
     ...mapMutations(["SET_TOKEN"])
