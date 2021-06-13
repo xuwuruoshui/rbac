@@ -83,9 +83,10 @@ export default {
         if (valid) {
           this.$axios.post('/login', this.loginForm).then((res) => {
             console.log(res)
-            const jwt = res.headers['authorization']
+            //const jwt = res.headers['Authorization']
+            const jwt = res.data.headers
             this.setToken(jwt)
-            this.$router.push('/index')
+            this.$router.push('/')
           })
         } else {
           console.log('error submit!!')

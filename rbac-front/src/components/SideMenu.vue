@@ -10,13 +10,13 @@
     <el-menu-item @click="isCollapse=!isCollapse">
       <i class="el-icon-menu"></i>
     </el-menu-item>
-    <el-menu-item index="/">
+    <el-menu-item index="/index">
       <i class="el-icon-s-home"></i>
       <span slot="title">首页</span>
     </el-menu-item>
     <el-submenu :index="menu.path"
                 v-for="(menu,index) in menuList"
-                :key=index>
+                :key="index">
       <template slot="title">
         <i :class="menu.icon"></i>
         <span slot="title">{{menu.title}}</span>
@@ -35,44 +35,27 @@
 </template>
 
 <script>
+//import { mapState } from 'vuex'
+
 export default {
   data() {
     return {
-      isCollapse: true,
-      menuList: [
-        {
-          name: 'SysManga',
-          title: '系统管理',
-          icon: 'el-icon-s-operation',
-          path: '',
-          children: [
-            {
-              name: 'SysUser',
-              title: '用户管理',
-              icon: 'el-icon-s-custom',
-              path: '/sys/users',
-              children: [],
-            },
-          ],
-        },
-        {
-          name: 'SysTools',
-          title: '系统工具',
-          icon: 'el-icon-s-tools',
-          path: '',
-          children: [
-            {
-              name: 'SysDict',
-              title: '数字字典',
-              icon: 'el-icon-s-order',
-              path: '/sys/dicts',
-              children: [],
-            },
-          ],
-        },
-      ],
+      isCollapse: false,
     }
   },
+  computed: {
+    menuList: {
+      get() {
+        return this.$store.state.menus.menuList
+      }
+    }
+  },
+  methods:{
+
+  },
+  created() {
+
+  }
 }
 </script>
 
