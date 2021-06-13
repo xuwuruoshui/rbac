@@ -8,11 +8,11 @@
         <strong class="head-title">Vue Element后台管理系统</strong>
         <div class="header-avator">
           <el-avatar size="medium"
-                     src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                     :src="userInfo.avatar"></el-avatar>
 
           <el-dropdown>
             <span class="el-dropdown-link">
-              Admin<i class="el-icon-arrow-down el-icon--right"></i>
+              {{userInfo.username}}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>个人中心</el-dropdown-item>
@@ -36,12 +36,27 @@
 import SideMenu from '../components/SideMenu.vue'
 export default {
   data() {
-    return {}
+    return {
+      userInfo: {
+        id: '',
+        username: '',
+        avatar: '',
+      },
+    }
   },
   components: {
     SideMenu,
   },
-  methods: {},
+  methods: {
+    getUserInfo() {
+      this.$axios.get('/sys/userInfo').then((res) => {
+        this.userInfo = res.data
+      })
+    },
+  },
+  created() {
+    this.getUserInfo()
+  },
 }
 </script>
 

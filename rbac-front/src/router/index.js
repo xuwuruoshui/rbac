@@ -1,21 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Index from '../views/Index.vue'
-import User from '../views/sys/User.vue'
-import Role from '../views/sys/Role.vue'
-import Menu from '../views/sys/Menu.vue'
+import Home from '@/views/Home.vue'
+import Index from '@/views/Index.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
     component: Home,
     children: [
       {
-        path: '/index',
+        path: '/',
         name: 'Index',
         meta: {
           title: '首页',
@@ -23,29 +19,24 @@ const routes = [
         component: Index,
       },
       {
-        path: '/index',
-        name: 'Index',
-        component: Index,
-      },
-      {
         path: '/login',
         name: 'Login',
-        component: () => import('../views/Login.vue'),
+        component: () => import('@/views/Login.vue'),
       },
       {
         path: '/sys/users',
         name: 'SysUser',
-        component: User,
+        component: () => import('@/views/sys/User.vue'),
       },
       {
         path: '/sys/roles',
         name: 'SysRole',
-        component: Role,
+        component: () => import('../views/sys/Roles.vue'),
       },
       {
         path: '/sys/menus',
         name: 'SysMenu',
-        component: Menu,
+        component: () => import('../views/sys/Menus.vue'),
       },
       {
         path: '*',

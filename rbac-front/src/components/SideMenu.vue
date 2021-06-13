@@ -10,11 +10,11 @@
     <el-menu-item @click="isCollapse=!isCollapse">
       <i class="el-icon-menu"></i>
     </el-menu-item>
-    <el-menu-item index="/index">
+    <el-menu-item index="/">
       <i class="el-icon-s-home"></i>
       <span slot="title">首页</span>
     </el-menu-item>
-    <el-submenu>
+    <el-submenu index="/sys/users">
       <template slot="title">
         <i class="el-icon-s-operation"></i>
         <span slot="title">系统管理</span>
