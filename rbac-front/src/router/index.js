@@ -13,15 +13,12 @@ const routes = [
       {
         path: '/',
         name: 'Index',
-        meta: {
-          title: '首页',
-        },
         component: Index,
       },
       {
-        path: '/login',
-        name: 'Login',
-        component: () => import('@/views/Login.vue'),
+        path: '/usercenter',
+        name: 'UserCenter',
+        component: () => import('@/views/UserCenter.vue'),
       },
       {
         path: '/sys/users',
@@ -38,12 +35,17 @@ const routes = [
         name: 'SysMenu',
         component: () => import('../views/sys/Menus.vue'),
       },
-      {
-        path: '*',
-        name: '404',
-        component: () => import('../views/error/Error.vue'),
-      },
     ],
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/Login.vue'),
+  },
+  {
+    path: '*',
+    name: '404',
+    component: () => import('../views/error/Error.vue'),
   },
 ]
 

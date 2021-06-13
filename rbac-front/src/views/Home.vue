@@ -10,13 +10,16 @@
           <el-avatar size="medium"
                      :src="userInfo.avatar"></el-avatar>
 
-          <el-dropdown>
+          <el-dropdown trigger="click"
+                       @command="handleCommand">
             <span class="el-dropdown-link">
               {{userInfo.username}}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>个人中心</el-dropdown-item>
-              <el-dropdown-item divided>退出</el-dropdown-item>
+              <el-dropdown-item>
+                <router-link to="/usercenter">个人中心</router-link>
+              </el-dropdown-item>
+              <el-dropdown-item command="logout">退出</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
 
@@ -34,6 +37,8 @@
 
 <script>
 import SideMenu from '../components/SideMenu.vue'
+import { mapMutations } from 'vuex'
+
 export default {
   data() {
     return {
@@ -48,11 +53,21 @@ export default {
     SideMenu,
   },
   methods: {
+    handleCommand(command) {
+      console.log(command)
+      if (command === 'logout') {
+        localStorage.clear()
+        sessionStorage.clear()
+        this.resetState()
+        this.$router.push('/login')
+      }
+    },
     getUserInfo() {
       this.$axios.get('/sys/userInfo').then((res) => {
         this.userInfo = res.data
       })
     },
+    ...mapMutations(['resetState']),
   },
   created() {
     this.getUserInfo()
@@ -97,7 +112,6 @@ export default {
   background-color: #e9eef3;
   color: #333;
   text-align: center;
-  line-height: 160px;
 }
 
 body > .el-container {
@@ -113,4 +127,8 @@ body > .el-container {
   line-height: 320px;
 }
 /* 整体end */
+
+a {
+  text-decoration: none;
+}
 </style>
