@@ -14,30 +14,22 @@
       <i class="el-icon-s-home"></i>
       <span slot="title">首页</span>
     </el-menu-item>
-    <el-submenu index="/sys/users">
+    <el-submenu :index="menu.path"
+                v-for="(menu,index) in menuList"
+                :key=index>
       <template slot="title">
-        <i class="el-icon-s-operation"></i>
-        <span slot="title">系统管理</span>
+        <i :class="menu.icon"></i>
+        <span slot="title">{{menu.title}}</span>
       </template>
       <el-menu-item-group>
-        <el-menu-item index="/sys/users">
-          <i class="el-icon-user-solid"></i>
-          <span slot="title">用户管理</span>
-        </el-menu-item>
-        <el-menu-item index="/sys/roles">
-          <i class="el-icon-s-custom"></i>
-          <span slot="title">角色管理</span>
-        </el-menu-item>
-        <el-menu-item index="/sys/menus">
-          <i class="el-icon-menu"></i>
-          <span slot="title">菜单管理</span>
+        <el-menu-item :index="item.path"
+                      v-for="(item,index) in menu.children"
+                      :key="index">
+          <i :class="item.icon"></i>
+          <span slot="title">{{item.title}}</span>
         </el-menu-item>
       </el-menu-item-group>
     </el-submenu>
-    <el-menu-item index="/sys/tools">
-      <i class="el-icon-s-tools"></i>
-      <span slot="title">系统工具</span>
-    </el-menu-item>
 
   </el-menu>
 </template>
@@ -47,6 +39,38 @@ export default {
   data() {
     return {
       isCollapse: true,
+      menuList: [
+        {
+          name: 'SysManga',
+          title: '系统管理',
+          icon: 'el-icon-s-operation',
+          path: '',
+          children: [
+            {
+              name: 'SysUser',
+              title: '用户管理',
+              icon: 'el-icon-s-custom',
+              path: '/sys/users',
+              children: [],
+            },
+          ],
+        },
+        {
+          name: 'SysTools',
+          title: '系统工具',
+          icon: 'el-icon-s-tools',
+          path: '',
+          children: [
+            {
+              name: 'SysDict',
+              title: '数字字典',
+              icon: 'el-icon-s-order',
+              path: '/sys/dicts',
+              children: [],
+            },
+          ],
+        },
+      ],
     }
   },
 }
