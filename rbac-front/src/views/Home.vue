@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-aside width="auto">
-      <side-menu></side-menu>
+      <side-menus></side-menus>
     </el-aside>
     <el-container>
       <el-header>
@@ -29,6 +29,7 @@
         </div>
       </el-header>
       <el-main>
+        <tabs/>
         <router-view />
       </el-main>
     </el-container>
@@ -36,7 +37,8 @@
 </template>
 
 <script>
-import SideMenu from '../components/SideMenu.vue'
+import SideMenus from '../components/SideMenus.vue'
+import Tabs from '../components/Tabs'
 import { mapMutations } from 'vuex'
 
 export default {
@@ -50,7 +52,8 @@ export default {
     }
   },
   components: {
-    SideMenu,
+    SideMenus,
+    Tabs
   },
   methods: {
     handleCommand(command) {
@@ -112,6 +115,7 @@ export default {
   background-color: #e9eef3;
   color: #333;
   text-align: center;
+  padding: 0;
 }
 
 body > .el-container {

@@ -5,6 +5,7 @@ import Index from '@/views/Index'
 import store from '@/store'
 import request from '@/request'
 
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -12,6 +13,7 @@ const routes = [
         path: '/',
         name: 'Home',
         component: Home,
+        redirect: '/index',
         children: [
             {
                 path: '/index',
@@ -35,11 +37,6 @@ const routes = [
         path: '/login',
         name: 'Login',
         component: () => import('@/views/Login.vue'),
-    },
-    {
-        path: '*',
-        name: 'Error',
-        component: () => import('@/views/error/Error.vue'),
     }
 ]
 
@@ -64,8 +61,8 @@ router.beforeEach((to, from, next) => {
             // 获取菜单信息
             request.get('/sys/menu/nav').then((res) => {
 
-                store.commit('setMenuList', res.data.nav)
-                store.commit('setPermissionList', res.data.authorities)
+                store.commit('menus/setMenuList', res.data.nav)
+                store.commit('menus/setPermissionList', res.data.authorities)
                 menuList = store.state.menus.menuList
 
                 menuList.forEach((menu) => {
@@ -81,6 +78,13 @@ router.beforeEach((to, from, next) => {
                         })
                     }
                 })
+                // 最后加入404路由，防止刷新一瞬间出现404
+                let errorRoute = {
+                        path: '*',
+                        name: 'Error',
+                        component: () => import('@/views/error/Error.vue'),
+                }
+            router.addRoute(errorRoute)
 
             })
         }

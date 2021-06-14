@@ -1,5 +1,5 @@
 <template>
-  <el-menu default-active="1"
+  <el-menu :default-active="editableTabsValue"
            class="el-menu-vertical-demo"
            :router="true"
            text-color="#bcbcbd"
@@ -7,10 +7,10 @@
            background-color="#1d1e23"
            :collapse="isCollapse">
 
-    <el-menu-item @click="isCollapse=!isCollapse">
+    <el-menu-item @click="isCollapse=!isCollapse" index="/">
       <i class="el-icon-menu"></i>
     </el-menu-item>
-    <el-menu-item index="/index">
+    <el-menu-item index="/index" @click="addTab({title:'首页',path:'/index'})">
       <i class="el-icon-s-home"></i>
       <span slot="title">首页</span>
     </el-menu-item>
@@ -24,7 +24,8 @@
       <el-menu-item-group>
         <el-menu-item :index="item.path"
                       v-for="(item,index) in menu.children"
-                      :key="index">
+                      :key="index"
+                      @click="addTab(item)">
           <i :class="item.icon"></i>
           <span slot="title">{{item.title}}</span>
         </el-menu-item>
@@ -35,26 +36,22 @@
 </template>
 
 <script>
-//import { mapState } from 'vuex'
+import { mapState,mapMutations } from 'vuex'
 
 export default {
+  name:"SideMenus",
   data() {
     return {
-      isCollapse: false,
+      isCollapse: false
     }
   },
   computed: {
-    menuList: {
-      get() {
-        return this.$store.state.menus.menuList
-      }
-    }
+    ...mapState('menus',['menuList','editableTabsValue'])
   },
   methods:{
-
+    ...mapMutations('menus',['addTab'])
   },
   created() {
-
   }
 }
 </script>
