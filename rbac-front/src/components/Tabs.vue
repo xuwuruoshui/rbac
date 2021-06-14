@@ -23,6 +23,10 @@ export default {
     removeTab(targetName) {
       let tabs = this.editableTabs;
       let activeName = this.editableTabsValue;
+      if(activeName==='/index'){
+        return
+      }
+
       if (activeName === targetName) {
         tabs.forEach((tab, index) => {
           if (tab.name === targetName) {
@@ -36,10 +40,10 @@ export default {
 
       this.editableTabsValue = activeName;
       this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+      this.$router.push(activeName)
     },
 
     changeTab(target){
-      console.log(target)
       this.$router.push(target.name)
     }
 

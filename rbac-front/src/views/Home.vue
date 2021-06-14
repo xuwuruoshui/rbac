@@ -39,7 +39,6 @@
 <script>
 import SideMenus from '../components/SideMenus.vue'
 import Tabs from '../components/Tabs'
-import { mapMutations } from 'vuex'
 
 export default {
   data() {
@@ -56,25 +55,26 @@ export default {
     Tabs
   },
   methods: {
+    // 注销
     handleCommand(command) {
-      console.log(command)
       if (command === 'logout') {
         localStorage.clear()
         sessionStorage.clear()
-        this.resetState()
         this.$router.push('/login')
+        location.reload()
       }
     },
     getUserInfo() {
       this.$axios.get('/sys/userInfo').then((res) => {
         this.userInfo = res.data
       })
-    },
-    ...mapMutations(['resetState']),
+    }
   },
   created() {
+    // 启动时获取用户信息
     this.getUserInfo()
   },
+
 }
 </script>
 

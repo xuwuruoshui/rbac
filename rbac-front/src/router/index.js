@@ -8,6 +8,12 @@ import request from '@/request'
 
 Vue.use(VueRouter)
 
+// 解决push、replace重复添加entry报错
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(err => err)
+}
+
 const routes = [
     {
         path: '/',
@@ -45,6 +51,8 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes,
 })
+
+
 
 // 路由请求限制
 router.beforeEach((to, from, next) => {

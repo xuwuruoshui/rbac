@@ -12,10 +12,7 @@ export default new Vuex.Store({
     setToken: (state, token) => {
       state.token = token
       localStorage.setItem('token', token)
-    },
-    resetState: (state) => {
-      state.token = ''
-    },
+    }
   },
   actions: {},
   modules: {
