@@ -7,13 +7,12 @@
       <el-header>
         <strong class="head-title">Vue Element后台管理系统</strong>
         <div class="header-avator">
-          <el-avatar size="medium"
-                     :src="userInfo.avatar"></el-avatar>
+          <el-avatar size="medium" :src="userInfo.avatar"></el-avatar>
 
-          <el-dropdown trigger="click"
-                       @command="handleCommand">
+          <el-dropdown trigger="click" @command="handleCommand">
             <span class="el-dropdown-link">
-              {{userInfo.username}}<i class="el-icon-arrow-down el-icon--right"></i>
+              {{ userInfo.username
+              }}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
@@ -23,13 +22,13 @@
             </el-dropdown-menu>
           </el-dropdown>
 
-          <el-link type="success"
-                   href="https://cn.vuejs.org/"
-                   target="_blank">Vue</el-link>
+          <el-link type="success" href="https://cn.vuejs.org/" target="_blank"
+            >Vue</el-link
+          >
         </div>
       </el-header>
       <el-main>
-        <tabs/>
+        <tabs />
         <router-view />
       </el-main>
     </el-container>
@@ -37,62 +36,47 @@
 </template>
 
 <script>
-import SideMenus from '../components/SideMenus.vue'
-import Tabs from '../components/Tabs'
+import SideMenus from "../components/SideMenus.vue";
+import Tabs from "../components/Tabs";
 
 export default {
   data() {
     return {
       userInfo: {
-        id: '',
-        username: '',
-        avatar: '',
+        id: "",
+        username: "",
+        avatar: "",
       },
-    }
+    };
   },
   components: {
     SideMenus,
-    Tabs
+    Tabs,
   },
   methods: {
     // 注销
     handleCommand(command) {
-      if (command === 'logout') {
-        localStorage.clear()
-        sessionStorage.clear()
-        this.$router.push('/login')
-        location.reload()
+      if (command === "logout") {
+        localStorage.clear();
+        sessionStorage.clear();
+        this.$router.push("/login");
+        location.reload();
       }
     },
     getUserInfo() {
-      this.$axios.get('/sys/userInfo').then((res) => {
-        this.userInfo = res.data
-      })
-    }
+      this.$axios.get("/sys/userInfo").then((res) => {
+        this.userInfo = res.data;
+      });
+    },
   },
   created() {
     // 启动时获取用户信息
-    this.getUserInfo()
+    this.getUserInfo();
   },
-
-}
+};
 </script>
 
 <style scoped>
-/* 头部start */
-.header-avator {
-  float: right;
-  width: 210px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-.el-dropdown-link {
-  cursor: pointer;
-  color: #b99b7c;
-}
-/* 头部end */
-
 /* 整体start */
 .el-container {
   height: 100%;
@@ -131,6 +115,20 @@ body > .el-container {
   line-height: 320px;
 }
 /* 整体end */
+
+/* 头部start */
+.header-avator {
+  float: right;
+  width: 210px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.el-dropdown-link {
+  cursor: pointer;
+  color: #b99b7c;
+}
+/* 头部end */
 
 a {
   text-decoration: none;

@@ -63,7 +63,7 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
         next()
     } else if (token == null) {
-        next({path: '/login'})
+        next({ path: '/login' })
     } else {
         if (menuList.length === 0) {
             // 获取菜单信息
@@ -81,18 +81,18 @@ router.beforeEach((to, from, next) => {
                             // 转换为路由
                             let route = menuToRoute(item)
                             if (route) {
-                                router.addRoute("Home",route)
+                                router.addRoute("Home", route)
                             }
                         })
                     }
                 })
                 // 最后加入404路由，防止刷新一瞬间出现404
                 let errorRoute = {
-                        path: '*',
-                        name: 'Error',
-                        component: () => import('@/views/error/Error.vue'),
+                    path: '*',
+                    name: 'Error',
+                    component: () => import('@/views/error/Error.vue'),
                 }
-            router.addRoute(errorRoute)
+                router.addRoute(errorRoute)
 
             })
         }
@@ -102,7 +102,7 @@ router.beforeEach((to, from, next) => {
 
 })
 
-// 菜单数据==>路由数据
+// 菜单对象封装为==>路由对象
 const menuToRoute = (menu) => {
     if (!menu.component) {
         return null

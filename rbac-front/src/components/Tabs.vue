@@ -1,30 +1,33 @@
 <template>
-  <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab" @tab-click="changeTab">
+  <el-tabs
+    v-model="editableTabsValue"
+    type="card"
+    closable
+    @tab-remove="removeTab"
+    @tab-click="changeTab"
+  >
     <el-tab-pane
-        v-for="item in editableTabs"
-        :key="item.name"
-        :label="item.title"
-        :name="item.name"
+      v-for="item in editableTabs"
+      :key="item.name"
+      :label="item.title"
+      :name="item.name"
     >
     </el-tab-pane>
   </el-tabs>
 </template>
 
 <script>
-
 export default {
   name: "Tabs",
   data() {
-    return {
-    }
+    return {};
   },
   methods: {
-
     removeTab(targetName) {
       let tabs = this.editableTabs;
       let activeName = this.editableTabsValue;
-      if(activeName==='/index'){
-        return
+      if (targetName === "/index") {
+        return;
       }
 
       if (activeName === targetName) {
@@ -39,37 +42,34 @@ export default {
       }
 
       this.editableTabsValue = activeName;
-      this.editableTabs = tabs.filter(tab => tab.name !== targetName);
-      this.$router.push(activeName)
+      this.editableTabs = tabs.filter((tab) => tab.name !== targetName);
+      this.$router.push(activeName);
     },
 
-    changeTab(target){
-      this.$router.push(target.name)
-    }
-
+    changeTab(target) {
+      this.$router.push(target.name);
+    },
   },
-  computed:{
-    editableTabs:{
-      set(val){
-        this.$store.state.menus.editableTabs = val
+  computed: {
+    editableTabs: {
+      set(val) {
+        this.$store.state.menus.editableTabs = val;
       },
-      get(){
-        return this.$store.state.menus.editableTabs
-      }
+      get() {
+        return this.$store.state.menus.editableTabs;
+      },
     },
-    editableTabsValue:{
-      set(val){
-        this.$store.state.menus.editableTabsValue = val
+    editableTabsValue: {
+      set(val) {
+        this.$store.state.menus.editableTabsValue = val;
       },
-      get(){
-        return this.$store.state.menus.editableTabsValue
-      }
-    }
-  }
-
-}
+      get() {
+        return this.$store.state.menus.editableTabsValue;
+      },
+    },
+  },
+};
 </script>
 
 <style scoped>
-
 </style>

@@ -5,25 +5,22 @@
   </div>
 </template>
 <script>
-
 export default {
   name: "App",
-  // 刷新页面，根据uri路径内容判定要跳转的路由，添加进tab标签页
+  // 刷新页面，根据uri路径内容判定要跳转的路由，添加进tab标签页(防止刷新页面,标签消失)
   watch: {
     $route(to) {
-
-      if (to.path !== '/login') {
+      if (to.path !== "/login") {
         let tab = {
           path: to.path,
-          title: to.meta.title
-        }
+          title: to.meta.title,
+        };
 
-        this.$store.commit("menus/addTab", tab)
+        this.$store.commit("menus/addTab", tab);
       }
-
-    }
-  }
-}
+    },
+  },
+};
 </script>
 <style>
 html,
