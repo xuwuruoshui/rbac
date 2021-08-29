@@ -69,8 +69,8 @@ router.beforeEach((to, from, next) => {
             // 获取菜单信息
             request.get('/sys/menu/nav').then((res) => {
 
-                store.commit('menus/setMenuList', res.data.nav)
-                store.commit('menus/setPermissionList', res.data.authorities)
+                store.commit('menus/setMenuList', res.nav)
+                store.commit('menus/setPermissionList', res.authorities)
                 menuList = store.state.menus.menuList
 
                 menuList.forEach((menu) => {

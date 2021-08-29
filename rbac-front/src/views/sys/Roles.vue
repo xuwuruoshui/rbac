@@ -1,5 +1,5 @@
 <template>
-  <div>角色管理</div>
+  <div>角色管理1</div>
 </template>
 
 <script>

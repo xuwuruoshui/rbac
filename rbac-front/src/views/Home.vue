@@ -38,6 +38,7 @@
 <script>
 import SideMenus from "../components/SideMenus.vue";
 import Tabs from "../components/Tabs";
+import { user } from "@/api";
 
 export default {
   data() {
@@ -63,10 +64,8 @@ export default {
         location.reload();
       }
     },
-    getUserInfo() {
-      this.$axios.get("/sys/userInfo").then((res) => {
-        this.userInfo = res.data;
-      });
+    async getUserInfo() {
+      this.userInfo = await user.fetchUserInfo();
     },
   },
   created() {
