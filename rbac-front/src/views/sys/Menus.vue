@@ -1,12 +1,78 @@
 <template>
   <div id="menus">
+    <!-- 新增 -->
     <el-form :inline="true"
              class="demo-form-inline">
       <el-form-item style="display: flex; just-content: left">
         <el-button type="primary"
-                   @click="handleAdd">新增</el-button>
+                   @click="addMenu">新增</el-button>
       </el-form-item>
     </el-form>
+
+    <!-- 表格 -->
+    <el-table :data="tableData"
+              style="width: 100%; "
+              row-key="id"
+              border
+              default-expand-all
+              :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+              :stripe="true">
+      <el-table-column prop="name"
+                       label="名称"
+                       sortable
+                       width="180">
+      </el-table-column>
+      <el-table-column prop="perms"
+                       label="操作权限"
+                       sortable
+                       width="180">
+      </el-table-column>
+      <el-table-column prop="icon"
+                       label="图标"> </el-table-column>
+      <el-table-column prop="icon"
+                       label="类型">
+        <template slot-scope="scope">
+          <el-tag size="small"
+                  v-if="scope.row.type === 0">目录</el-tag>
+          <el-tag size="small"
+                  v-else-if="scope.row.type === 1"
+                  type="success">菜单</el-tag>
+          <el-tag size="small"
+                  v-else-if="scope.row.type === 2"
+                  type="info">按钮</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="path"
+                       label="菜单URL"> </el-table-column>
+      <el-table-column prop="component"
+                       label="菜单组件"> </el-table-column>
+      <el-table-column prop="orderNum"
+                       label="排序号"> </el-table-column>
+      <el-table-column prop="status"
+                       label="状态">
+        <template #default="scope">
+          <el-tag size="small"
+                  v-if="scope.row.status === 1"
+                  type="success">正常</el-tag>
+          <el-tag size="small"
+                  v-else
+                  type="danger">禁用</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="icon"
+                       label="操作"
+                       width="180">
+        <template slot-scope="scope">
+          <el-button size="mini"
+                     @click="editMenu(scope.row.id)">编辑</el-button>
+          <el-button slot="reference"
+                     size="mini"
+                     type="danger"
+                     @click="deleteMenu(scope.row.id)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
     <!-- 对话框 -->
     <el-dialog title="提示"
                :visible.sync="dialogVisible"
@@ -77,68 +143,6 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-table :data="tableData"
-              style="width: 100%; margin-bottom: 20px"
-              row-key="id"
-              border
-              default-expand-all
-              :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-              :stripe="true">
-      <el-table-column prop="name"
-                       label="名称"
-                       sortable
-                       width="180">
-      </el-table-column>
-      <el-table-column prop="perms"
-                       label="操作权限"
-                       sortable
-                       width="180">
-      </el-table-column>
-      <el-table-column prop="icon"
-                       label="图标"> </el-table-column>
-      <el-table-column prop="icon"
-                       label="类型">
-        <template slot-scope="scope">
-          <el-tag size="small"
-                  v-if="scope.row.type === 0">目录</el-tag>
-          <el-tag size="small"
-                  v-else-if="scope.row.type === 1"
-                  type="success">菜单</el-tag>
-          <el-tag size="small"
-                  v-else-if="scope.row.type === 2"
-                  type="info">按钮</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="path"
-                       label="菜单URL"> </el-table-column>
-      <el-table-column prop="component"
-                       label="菜单组件"> </el-table-column>
-      <el-table-column prop="orderNum"
-                       label="排序号"> </el-table-column>
-      <el-table-column prop="status"
-                       label="状态">
-        <template #default="scope">
-          <el-tag size="small"
-                  v-if="scope.row.status === 1"
-                  type="success">正常</el-tag>
-          <el-tag size="small"
-                  v-else
-                  type="danger">禁用</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="icon"
-                       label="操作"
-                       width="180">
-        <template slot-scope="scope">
-          <el-button size="mini"
-                     @click="handleEdit(scope.row.id)">编辑</el-button>
-          <el-button slot="reference"
-                     size="mini"
-                     type="danger"
-                     @click="deleteMenu(scope.row.id)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
   </div>
 </template>
 
@@ -175,12 +179,12 @@ export default {
   },
   methods: {
     // 添加
-    handleAdd() {
+    addMenu() {
       this.dialogVisible = true
       this.editForm.option = '添加'
     },
     // 修改
-    async handleEdit(id) {
+    async editMenu(id) {
       // let { menuDetail } = await menu.fetchMenu(id)
       // this.editForm = await menuDetail
       this.editForm = (await menu.fetchMenu(id)).menuDetail
@@ -199,7 +203,7 @@ export default {
             //     message: '操作成功',
             //     type: 'success',
             //     onclose: () => {
-            //       this.getMenu()
+            //       this.getMenus()
             //     },
             //   })
             //   this.dialogVisible = false
@@ -209,7 +213,7 @@ export default {
               message: '添加成功',
               type: 'success',
               onclose: () => {
-                this.getMenu()
+                this.getMenus()
               },
             })
             this.dialogVisible = false
@@ -219,7 +223,7 @@ export default {
               message: '修改成功',
               type: 'success',
               onclose: () => {
-                this.getMenu()
+                this.getMenus()
               },
             })
             this.dialogVisible = false
@@ -231,7 +235,7 @@ export default {
       })
     },
     // 获取菜单
-    async getMenu() {
+    async getMenus() {
       this.tableData = (await menu.fetchMenuList()).menus
     },
     // 删除菜单
@@ -261,7 +265,7 @@ export default {
           })
         })
     },
-    // 关闭
+    // 关闭对话框
     handleClose(done) {
       this.$confirm('确认关闭？')
         .then(() => {
@@ -281,14 +285,14 @@ export default {
     },
   },
   created() {
-    this.getMenu()
+    this.getMenus()
   },
 }
 </script>
 
 <style scoped>
 #menus {
-  margin: 0 15px;
+  margin: 5px;
 }
 </style>
 <style>

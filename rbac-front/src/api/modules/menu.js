@@ -7,7 +7,7 @@ const menu = {
   },
 
   fetchMenu (id) {
-    return request.get('/sys/menu/info/' + id)
+    return request.post('/sys/menu/info/' + id)
   },
   save () {
     return null
@@ -15,8 +15,8 @@ const menu = {
   update () {
     return null
   },
-  delete () {
-    return null
+  delete (ids) {
+    return ids
   }
 }
 
