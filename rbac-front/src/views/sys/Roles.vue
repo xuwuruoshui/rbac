@@ -1,6 +1,6 @@
 <template>
   <div id="role">
-    <!-- 搜索、新增、批量删除 -->
+    <!-- 角色搜索、新增、批量删除 -->
     <el-form :inline="true"
              style="display:flex;  justify-content:flex-start;">
       <el-form-item style="just-content: left">
@@ -24,7 +24,7 @@
 
     <!-- 表格 -->
     <el-table ref="multipleTable"
-              :data="tableData"
+              :data="rolesTable"
               tooltip-effect="dark"
               style="width: 100%"
               border
@@ -60,7 +60,7 @@
                        label="操作">
         <template slot-scope="scope">
           <el-button size="mini"
-                     @click="configAuth(scope.row.id)">分配权限</el-button>
+                     @click="assignPermissions(scope.row.id)">分配权限</el-button>
           <el-button size="mini"
                      @click="editRole(scope.row.id)">编辑</el-button>
           <el-button slot="reference"
@@ -113,28 +113,28 @@
         <el-form-item>
           <el-button type="primary"
                      @click="submitRoleForm('editForm')">{{editForm.option}}</el-button>
-          <el-button @click="resetForm('editForm')">重置</el-button>
+          <el-button @click="resetRoleForm('editForm')">重置</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
     <!-- 分配权限对话框 -->
     <el-dialog title="分配权限"
-               :visible.sync="authDialogVisible"
+               :visible.sync="permissionsDialogVisible"
                width="40%">
-      <el-form :model="authForm">
-        <el-tree :data="authTreeData"
+      <el-form :model="permissionsForm">
+        <el-tree :data="permissionsTreeData"
                  show-checkbox
                  node-key="id"
-                 ref="authTree"
+                 ref="permissionsTree"
                  :default-expand-all="true"
                  :props="defaultProps">
         </el-tree>
       </el-form>
       <span slot="footer"
             class="dialog-footer">
-        <el-button @click="authDialogVisible = false">取 消</el-button>
+        <el-button @click="permissionsDialogVisible = false">取 消</el-button>
         <el-button type="primary"
-                   @click="submitAuthForm()">确 定</el-button>
+                   @click="submitPermissionsForm()">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -152,7 +152,7 @@ export default {
       size: 10,
       current: 1,
       roleDialogVisible: false,
-      tableData: [],
+      rolesTable: [],
       editForm: {
         name: '',
         code: '',
@@ -166,13 +166,13 @@ export default {
         statu: [{ required: true, message: '请选择状态', trigger: 'blur' }],
       },
       multipleSelection: [],
-      authDialogVisible: false,
+      permissionsDialogVisible: false,
       defaultProps: {
         children: 'children',
         label: 'name',
       },
-      authForm: {},
-      authTreeData: [],
+      permissionsForm: {},
+      permissionsTreeData: [],
     }
   },
   methods: {
@@ -264,27 +264,27 @@ export default {
       })
     },
     // 分配权限
-    async configAuth(id) {
-      this.authDialogVisible = true
-      this.authTreeData = (await menu.fetchMenuList()).menus
+    async assignPermissions(id) {
+      this.permissionsDialogVisible = true
+      this.permissionsTreeData = (await menu.fetchMenuList()).menus
       // 回显
       let roleData = (await role.fetchRole(id)).role
-      this.$refs.authTree.setCheckedKeys(roleData.menuIds)
-      this.authForm = roleData
+      this.$refs.permissionsTree.setCheckedKeys(roleData.menuIds)
+      this.permissionsForm = roleData
     },
     setCheckedKeys() {},
     // 权限提交
-    submitAuthForm() {
+    submitPermissionsForm() {
       // 选中的节点id
       let ids = []
 
       // 选中的节点
-      ids.push(this.$refs.authTree.getCheckedKeys())
+      ids.push(this.$refs.permissionsTree.getCheckedKeys())
       // 选中的节点上面的父节点
-      ids.push(this.$refs.authTree.getHalfCheckedKeys())
-      // let authData = {
+      ids.push(this.$refs.permissionsTree.getHalfCheckedKeys())
+      // let permissionsData = {
       //   ids,
-      //   id: this.authForm.id,
+      //   id: this.permissionsForm.id,
       // }
       this.$message({
         showClose: true,
@@ -294,7 +294,7 @@ export default {
           this.getRoles()
         },
       })
-      this.authDialogVisible = false
+      this.permissionsDialogVisible = false
       //})
     },
     toggleSelection(rows) {
@@ -310,13 +310,13 @@ export default {
     handleClose(done) {
       this.$confirm('确认关闭？')
         .then(() => {
-          this.resetForm('editForm')
+          this.resetRoleForm('editForm')
           done()
         })
         .catch(() => {})
     },
     // 关闭编辑框，清空回显数据数据
-    resetForm(editForm) {
+    resetRoleForm(editForm) {
       this.$refs[editForm].resetFields()
       this.roleDialogVisible = false
       this.editForm = {}
@@ -342,7 +342,7 @@ export default {
         current: this.current,
         size: this.size,
       })
-      this.tableData = reusltData.roles
+      this.rolesTable = reusltData.roles
       this.current = reusltData.current
       this.total = reusltData.total
       this.size = reusltData.size
@@ -365,5 +365,11 @@ export default {
 }
 .el-pagination {
   margin-top: 20px;
+}
+</style>
+<style>
+#role > .el-table td,
+#role > .el-table th {
+  text-align: center !important;
 }
 </style>

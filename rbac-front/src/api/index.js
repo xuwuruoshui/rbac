@@ -1,8 +1,8 @@
 import user from './modules/user'
 import menu from './modules/menu'
 import role from './modules/role'
-import auth from './modules/auth'
+import permissions from './modules/permissions'
 
 export {
-  menu, user, role, auth
+  menu, user, role, permissions
 }
