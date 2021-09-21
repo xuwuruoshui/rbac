@@ -23,6 +23,9 @@ const user = {
   },
   resetUserPasswd () {
     return
+  },
+  delete () {
+    return null
   }
 }
 

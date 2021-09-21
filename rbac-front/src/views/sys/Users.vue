@@ -2,6 +2,8 @@
   <div id="user">
     <!-- 用户搜索、新增、批量删除 -->
     <el-form :inline="true"
+             border
+             stripe
              style="display:flex;  justify-content:flex-start;">
       <el-form-item style="just-content: left">
         <el-input v-model="searchForm.name"
@@ -191,8 +193,8 @@ export default {
         status: [{ required: true, message: '请选择状态', trigger: 'blur' }],
       },
       usersTable: [],
+      multipleSelection: [],
       userDialogVisible: false,
-      delBtnStatus: true,
       assigningRolesDialogFormVisible: false,
       roleForm: {},
       roleData: [],
@@ -278,7 +280,35 @@ export default {
       this.editForm = {}
     },
     // 删除用户
-    deleteUser() {},
+    deleteUser(id) {
+      this.$confirm('是否要删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          console.log(id)
+          //删除及批量删除
+          let ids = []
+          if (id === null) {
+            ids.push(this.multipleSelection.map((item) => item.id))
+            console.log(ids)
+          } else {
+            ids.push(id)
+          }
+          user.delete(ids)
+          this.$message({
+            type: 'success',
+            message: '删除成功!',
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除',
+          })
+        })
+    },
     // 分配角色
     async assigningRoles(id) {
       this.assigningRolesDialogFormVisible = true
@@ -313,7 +343,9 @@ export default {
           })
         })
     },
-    handleSelectionChange() {},
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
     async getUserList() {
       let userListData = await user.fetchUserList()
       this.usersTable = userListData.users
@@ -321,8 +353,19 @@ export default {
       this.size = userListData.size
       this.current = userListData.current
     },
-    handleSizeChange() {},
-    handleCurrentChange() {},
+    handleSizeChange(val) {
+      this.size = val
+      this.getRoles()
+    },
+    handleCurrentChange(val) {
+      this.current = val
+      this.getRoles()
+    },
+  },
+  computed: {
+    delBtnStatus: function () {
+      return this.multipleSelection.length === 0
+    },
   },
   created() {
     this.getUserList()
