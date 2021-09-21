@@ -5,15 +5,19 @@ import store from './store'
 import Element from 'element-ui'
 import "element-ui/lib/theme-chalk/index.css"
 // import axios  from 'axios'
-import request  from './request'
+import request from './request'
+import authFuc from './mixin/authFuc'
 
 
 require("./mock")
 
 Vue.use(Element)
+Vue.use(authFuc)
 //Vue.prototype.$axios = axios 
-Vue.prototype.$axios = request 
+Vue.prototype.$axios = request
 Vue.config.productionTip = false
+
+
 
 new Vue({
   router,

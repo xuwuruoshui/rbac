@@ -15,11 +15,13 @@
       </el-form-item>
       <el-form-item style="just-content: left">
         <el-button type="primary"
-                   @click="addUser">新增</el-button>
+                   @click="addUser"
+                   v-if="hasAuth('sys:user:save')">新增</el-button>
       </el-form-item>
       <el-form-item style="just-content: left">
         <el-button type="danger"
                    @click="deleteUser(null)"
+                   v-if="hasAuth('sys:user:delete')"
                    :disabled="delBtnStatus">批量删除</el-button>
       </el-form-item>
     </el-form>
