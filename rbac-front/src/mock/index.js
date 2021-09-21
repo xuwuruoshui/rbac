@@ -106,7 +106,7 @@ Mock.mock('/sys/menu/list', 'get', () => {
       "id": 1,
       "created": "2021-01-15T18:58:18",
       "updated": "2021-01-15T18:58:20",
-      "statu": 1,
+      "status": 1,
       "parentId": 0,
       "name": "系统管理",
       "path": "",
@@ -120,7 +120,7 @@ Mock.mock('/sys/menu/list', 'get', () => {
           "id": 2,
           "created": "2021-01-15T19:03:45",
           "updated": "2021-01-15T19:03:48",
-          "statu": 1,
+          "status": 1,
           "parentId": 1,
           "name": "用户管理",
           "path": "/sys/users",
@@ -134,7 +134,7 @@ Mock.mock('/sys/menu/list', 'get', () => {
               "id": 9,
               "created": "2021-01-17T21:48:32",
               "updated": null,
-              "statu": 1,
+              "status": 1,
               "parentId": 2,
               "name": "添加用户",
               "path": null,
@@ -149,7 +149,7 @@ Mock.mock('/sys/menu/list', 'get', () => {
               "id": 10,
               "created": "2021-01-17T21:49:03",
               "updated": "2021-01-17T21:53:04",
-              "statu": 1,
+              "status": 1,
               "parentId": 2,
               "name": "修改用户",
               "path": null,
@@ -164,7 +164,7 @@ Mock.mock('/sys/menu/list', 'get', () => {
               "id": 11,
               "created": "2021-01-17T21:49:21",
               "updated": null,
-              "statu": 1,
+              "status": 1,
               "parentId": 2,
               "name": "删除用户",
               "path": null,
@@ -179,7 +179,7 @@ Mock.mock('/sys/menu/list', 'get', () => {
               "id": 12,
               "created": "2021-01-17T21:49:58",
               "updated": null,
-              "statu": 1,
+              "status": 1,
               "parentId": 2,
               "name": "分配角色",
               "path": null,
@@ -194,7 +194,7 @@ Mock.mock('/sys/menu/list', 'get', () => {
               "id": 13,
               "created": "2021-01-17T21:50:36",
               "updated": null,
-              "statu": 1,
+              "status": 1,
               "parentId": 2,
               "name": "重置密码",
               "path": null,
@@ -211,7 +211,7 @@ Mock.mock('/sys/menu/list', 'get', () => {
           "id": 3,
           "created": "2021-01-15T19:03:45",
           "updated": "2021-01-15T19:03:48",
-          "statu": 1,
+          "status": 1,
           "parentId": 1,
           "name": "角色管理",
           "path": "/sys/roles",
@@ -229,7 +229,7 @@ Mock.mock('/sys/menu/list', 'get', () => {
       "id": 5,
       "created": "2021-01-15T19:06:11",
       "updated": null,
-      "statu": 1,
+      "status": 1,
       "parentId": 0,
       "name": "系统工具",
       "path": "",
@@ -243,7 +243,7 @@ Mock.mock('/sys/menu/list', 'get', () => {
           "id": 6,
           "created": "2021-01-15T19:07:18",
           "updated": "2021-01-18T16:32:13",
-          "statu": 1,
+          "status": 1,
           "parentId": 5,
           "name": "数字字典",
           "path": "/sys/dicts",
@@ -269,7 +269,7 @@ Mock.mock(RegExp('/sys/menu/info/*'), 'get', () => {
 
   let menuDetail = {
     "id": 3,
-    "statu": 1,
+    "status": 1,
     "parentId": 1,
     "name": "角色管理",
     "path": "/sys/roles",
@@ -297,7 +297,7 @@ Mock.mock(RegExp('/sys/role/list*'), 'get', () => {
         "id": 3,
         "created": "2021-01-04T10:09:14",
         "updated": "2021-01-30T08:19:52",
-        "statu": 1,
+        "status": 1,
         "name": "普通用户",
         "code": "normal",
         "remark": "只有基本查看功能",
@@ -307,7 +307,7 @@ Mock.mock(RegExp('/sys/role/list*'), 'get', () => {
         "id": 6,
         "created": "2021-01-16T13:29:03",
         "updated": "2021-01-17T15:50:45",
-        "statu": 1,
+        "status": 1,
         "name": "超级管理员",
         "code": "admin",
         "remark": "系统默认最高权限，不可以编辑和任意修改",
@@ -336,7 +336,7 @@ Mock.mock(RegExp('/sys/role/info/*'), 'get', () => {
     "id": 6,
     "created": "2021-01-16T13:29:03",
     "updated": "2021-01-17T15:50:45",
-    "statu": 1,
+    "status": 1,
     "name": "超级管理员",
     "code": "admin",
     "remark": "系统默认最高权限，不可以编辑和任意修改",
@@ -355,7 +355,7 @@ Mock.mock(RegExp('/sys/role/*'), 'post', () => {
 })
 
 
-Mock.mock(RegExp('/sys/user'), 'get', () => {
+Mock.mock('/sys/user', 'get', () => {
   result.data = {
     "users": [
       {
@@ -375,7 +375,7 @@ Mock.mock(RegExp('/sys/user'), 'get', () => {
             "id": 6,
             "created": "2021-01-16T13:29:03",
             "updated": "2021-01-17T15:50:45",
-            "statu": 1,
+            "status": 1,
             "name": "超级管理员",
             "code": "admin",
             "remark": "系统默认最高权限，不可以编辑和任意修改",
@@ -385,7 +385,7 @@ Mock.mock(RegExp('/sys/user'), 'get', () => {
             "id": 3,
             "created": "2021-01-04T10:09:14",
             "updated": "2021-01-30T08:19:52",
-            "statu": 1,
+            "status": 1,
             "name": "普通用户",
             "code": "normal",
             "remark": "只有基本查看功能",
@@ -410,7 +410,7 @@ Mock.mock(RegExp('/sys/user'), 'get', () => {
             "id": 3,
             "created": "2021-01-04T10:09:14",
             "updated": "2021-01-30T08:19:52",
-            "statu": 1,
+            "status": 1,
             "name": "普通用户",
             "code": "normal",
             "remark": "只有基本查看功能",
@@ -431,5 +431,28 @@ Mock.mock(RegExp('/sys/user'), 'get', () => {
     "pages": 1
   }
 
+  return result
+})
+
+Mock.mock(RegExp('/sys/user/*'), 'get', () => {
+
+  let user = {
+    "id": 2,
+    "created": "2021-01-30T08:20:22",
+    "updated": "2021-01-30T08:55:57",
+    "status": 1,
+    "username": "test",
+    "phone": "12345678912",
+    "password": "$2a$10$0ilP4ZD1kLugYwLCs4pmb.ZT9cFqzOZTNaMiHxrBnVIQUGUwEvBIO",
+    "avatar": "https://image-1300566513.cos.ap-guangzhou.myqcloud.com/upload/images/5a9f48118166308daba8b6da7e466aab.jpg",
+    "email": "test@qq.com",
+    "city": null,
+    "lastLogin": null,
+    "roleIds": [6, 3]
+  }
+
+  result.data = {
+    user
+  }
   return result
 })

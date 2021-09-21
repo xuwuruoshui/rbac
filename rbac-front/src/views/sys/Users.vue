@@ -21,7 +21,7 @@
                    :disabled="delBtnStatus">批量删除</el-button>
       </el-form-item>
     </el-form>
-    <!-- 表格 -->
+    <!-- 用户表格 -->
     <el-table ref="multipleTable"
               :data="usersTable"
               tooltip-effect="dark"
@@ -91,21 +91,87 @@
           <el-button size="mini"
                      @click="assigningRoles(scope.row.id)">分配角色</el-button>
           <el-button size="mini"
-                     @click="resetPassword(scope.row.id)">重置密码</el-button>
+                     @click="resetPassword(scope.row.id,scope.row.username)">重置密码</el-button>
           <el-button size="mini"
-                     @click="editRole(scope.row.id)">编辑</el-button>
+                     @click="editUser(scope.row.id)">编辑</el-button>
           <el-button slot="reference"
                      size="mini"
                      type="danger"
-                     @click="deleteRole(scope.row.id)">删除</el-button>
+                     @click="deleteUser(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 分页 -->
+    <el-pagination @size-change="handleSizeChange"
+                   @current-change="handleCurrentChange"
+                   :current-page="current"
+                   :page-sizes="[10, 20, 50, 100]"
+                   :page-size="size"
+                   :total="total"
+                   layout="total, sizes, prev, pager, next, jumper">
+    </el-pagination>
+
+    <!-- 用户对话框 -->
+    <el-dialog title="提示"
+               :visible.sync="userDialogVisible"
+               width="40%"
+               :before-close="handleClose">
+      <el-form :model="userForm"
+               :rules="userFormRules"
+               ref="userForm"
+               label-width="100px"
+               class="demo-ruleForm">
+        <el-form-item label="用户"
+                      prop="username">
+          <el-input v-model="userForm.username"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱"
+                      prop="email">
+          <el-input v-model="userForm.email"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号"
+                      prop="phone">
+          <el-input v-model="userForm.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="类型"
+                      prop="status">
+          <el-radio-group v-model="userForm.status">
+            <el-radio :label="0">禁用</el-radio>
+            <el-radio :label="1">正常</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-button type="primary"
+                   @click="submitUserForm('userForm')">{{userForm.option}}</el-button>
+        <el-button @click="resetUserForm('userForm')">重置</el-button>
+      </el-form>
+    </el-dialog>
+
+    <!-- 分配角色对话框 -->
+    <el-dialog title="分配角色"
+               :visible.sync="assigningRolesDialogFormVisible">
+      <el-form :model="roleForm">
+        <el-tree :data="roleData"
+                 show-checkbox
+                 node-key="id"
+                 ref="roleTree"
+                 :default-expand-all="true"
+                 :props="defaultProps">
+        </el-tree>
+      </el-form>
+      <div slot="footer"
+           class="dialog-footer">
+        <el-button @click="assigningRolesDialogFormVisible = false">取 消</el-button>
+        <el-button type="primary"
+                   @click="assigningRolesDialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-import { user } from '@/api'
+import { user, role } from '@/api'
 
 export default {
   data() {
@@ -113,26 +179,150 @@ export default {
       searchForm: {
         name: '',
       },
+      userForm: {
+        option: '',
+      },
+      userFormRules: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+        ],
+        email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
+        phone: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
+        status: [{ required: true, message: '请选择状态', trigger: 'blur' }],
+      },
       usersTable: [],
+      userDialogVisible: false,
       delBtnStatus: true,
+      assigningRolesDialogFormVisible: false,
+      roleForm: {},
+      roleData: [],
+      defaultProps: {
+        children: 'children',
+        label: 'name',
+      },
+      current: 1,
+      size: 0,
+      total: 0,
     }
   },
   methods: {
     // 查询用户
     searchUser() {},
     // 添加用户
-    addUser() {},
+    addUser() {
+      this.userDialogVisible = true
+      this.userForm.option = '添加用户'
+    },
+    // 编辑用户
+    async editUser() {
+      this.userDialogVisible = true
+      console.log(await user.fetchUser())
+      this.userForm = (await user.fetchUser()).user
+      this.userForm.option = '修改用户'
+    },
+    // 关闭对话框
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(() => {
+          this.resetUserForm('userForm')
+          done()
+        })
+        .catch(() => {})
+    },
+    submitUserForm(userForm) {
+      this.$refs[userForm].validate(async (valid) => {
+        if (valid) {
+          let option = this.userForm.id ? 'update' : 'save'
+          if (option == 'update') {
+            // menu.save(this.editForm).then(() => {
+            //   this.$message({
+            //     showClose: true,
+            //     message: '操作成功',
+            //     type: 'success',
+            //     onclose: () => {
+            //       this.getMenu()
+            //     },
+            //   })
+            //   this.roleDialogVisible = false
+            // })
+            this.$message({
+              showClose: true,
+              message: '添加成功',
+              type: 'success',
+              onClose: () => {
+                this.getUserList()
+              },
+            })
+            this.userDialogVisible = false
+          } else {
+            this.$message({
+              showClose: true,
+              message: '修改成功',
+              type: 'success',
+              onClose: () => {
+                this.getUserList()
+              },
+            })
+            this.userDialogVisible = false
+          }
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    // 关闭编辑框，清空回显数据数据
+    resetUserForm(userForm) {
+      this.$refs[userForm].resetFields()
+      this.roleDialogVisible = false
+      this.editForm = {}
+    },
     // 删除用户
     deleteUser() {},
     // 分配角色
-    assigningRoles() {},
+    async assigningRoles(id) {
+      this.assigningRolesDialogFormVisible = true
+      let roleData = await role.fetchRoleList()
+      // 获取所有角色
+      this.roleData = roleData.roles
+      // 回显
+      let userData = (await user.fetchUser(id)).user
+      this.$refs.roleTree.setCheckedKeys(userData.roleIds)
+    },
+    setCheckedKeys() {},
     // 重置密码
-    resetPassword() {},
+    resetPassword(id, username) {
+      this.$confirm(`将重置用户${username}的密码,是否继续?`, '提示', {
+        confirmButtonText: '确定',
+        cancleButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          //user.resetUserPasswd()
+          this.$message({
+            showClose: true,
+            message: '重置密码成功',
+            type: 'success',
+          })
+        })
+        .catch(() => {
+          this.$message({
+            showClose: true,
+            message: '已取消',
+            type: 'warning',
+          })
+        })
+    },
     handleSelectionChange() {},
     async getUserList() {
       let userListData = await user.fetchUserList()
       this.usersTable = userListData.users
+      this.total = userListData.total
+      this.size = userListData.size
+      this.current = userListData.current
     },
+    handleSizeChange() {},
+    handleCurrentChange() {},
   },
   created() {
     this.getUserList()

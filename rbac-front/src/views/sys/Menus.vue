@@ -122,8 +122,8 @@
           <el-input v-model="editForm.component"></el-input>
         </el-form-item>
         <el-form-item label="类型"
-                      prop="statu">
-          <el-radio-group v-model="editForm.statu">
+                      prop="status">
+          <el-radio-group v-model="editForm.status">
             <el-radio :label="0">禁用</el-radio>
             <el-radio :label="1">正常</el-radio>
           </el-radio-group>
@@ -172,7 +172,7 @@ export default {
         orderNum: [
           { required: true, message: '请填入排序号', trigger: 'blur' },
         ],
-        statu: [{ required: true, message: '请选择状态', trigger: 'blur' }],
+        status: [{ required: true, message: '请选择状态', trigger: 'blur' }],
       },
       tableData: [],
     }

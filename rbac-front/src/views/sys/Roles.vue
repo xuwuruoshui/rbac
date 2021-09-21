@@ -104,8 +104,8 @@
           <el-input v-model="editForm.remark"></el-input>
         </el-form-item>
         <el-form-item label="类型"
-                      prop="statu">
-          <el-radio-group v-model="editForm.statu">
+                      prop="status">
+          <el-radio-group v-model="editForm.status">
             <el-radio :label="0">禁用</el-radio>
             <el-radio :label="1">正常</el-radio>
           </el-radio-group>
@@ -251,8 +251,8 @@ export default {
               showClose: true,
               message: '修改成功',
               type: 'success',
-              onclose: () => {
-                this.getMenu()
+              onClose: () => {
+                this.getRoles()
               },
             })
             this.roleDialogVisible = false
@@ -266,6 +266,7 @@ export default {
     // 分配权限
     async assignPermissions(id) {
       this.permissionsDialogVisible = true
+      // 获取所有菜单
       this.permissionsTreeData = (await menu.fetchMenuList()).menus
       // 回显
       let roleData = (await role.fetchRole(id)).role

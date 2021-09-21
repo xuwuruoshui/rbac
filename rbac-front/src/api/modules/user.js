@@ -17,6 +17,12 @@ const user = {
   // 获取用户信息
   fetchUserList () {
     return request.get("/sys/user")
+  },
+  fetchUser (id) {
+    return request.get("/sys/user/" + id)
+  },
+  resetUserPasswd () {
+    return
   }
 }
 
